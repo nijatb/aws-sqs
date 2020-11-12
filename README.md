@@ -1,14 +1,20 @@
-         ___        ______     ____ _                 _  ___  
-        / \ \      / / ___|   / ___| | ___  _   _  __| |/ _ \ 
-       / _ \ \ /\ / /\___ \  | |   | |/ _ \| | | |/ _` | (_) |
-      / ___ \ V  V /  ___) | | |___| | (_) | |_| | (_| |\__, |
-     /_/   \_\_/\_/  |____/   \____|_|\___/ \__,_|\__,_|  /_/ 
- ----------------------------------------------------------------- 
 
+Sample code to test AWS SQS and SNS
 
-Hi there! Welcome to AWS Cloud9!
+SQS Accedd Policy used:
 
-To get started, create some files, play with the terminal,
-or visit https://docs.aws.amazon.com/console/cloud9/ for our documentation.
-
-Happy coding!
+{ 
+  "Statement": 
+  [
+    { 
+      "Effect":"Allow", 
+      "Principal": { "Service": "sns.amazonaws.com" },
+      "Action":"sqs:SendMessage", "Resource":"YOUR_SQS_QUEUE_ARN",
+      "Condition":{ 
+        "ArnEquals":{ 
+          "aws:SourceArn":"SNS_TOPIC_ARN" 
+        } 
+      } 
+    }
+  ]
+  }

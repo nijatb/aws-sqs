@@ -18,12 +18,13 @@ sqs.createQueue(params, function(err, data) {
   else {
     console.log('Successfully created SQS queue URL ' + data.QueueUrl);
     queueUrl = data.QueueUrl;
-    sendMessages(data.QueueUrl);
+    sendMessagesToSQS(data.QueueUrl);
+    //createMessagesUsingSNS()
   }
 });
 
 // Send 50 messages to SQS
-async function sendMessages(queueUrl) {
+async function sendMessagesToSQS(queueUrl) {
   var messages = [];
   for (var i = 0; i < 5; i++) {
     messages[i] = [];
@@ -52,6 +53,21 @@ async function sendMessages(queueUrl) {
   }
 }
 
+// Create an SNS messages var sns = new AWS.SNS(); 
+function createMessagesUsingSNS(){ 
+  var sns = new AWS.SNS();
+
+  var message = 'This is a message from Amazon SNS'; 
+  console.log('Sending messages: '+ message); 
+  sns.publish({ 
+    Message: message, 
+    TargetArn: 'TOPIC_ARN' 
+    
+  }, function(err, data) { 
+    if (err) console.log(err.stack); 
+    else console.log('Message sent by SNS: '+ data. MessageId);
+  });
+}
 
 var waitingSQS = false;
 var queueCounter = 0;
